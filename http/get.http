@@ -1,0 +1,15 @@
+POST https://localhost:8080/graphql
+Content-Type: application/json
+Authorization: Bearer xxx
+X-REQUEST-TYPE: GraphQL
+
+query GetUser($id: ID!) {
+    user(id: $id) {
+      id
+      title
+    }
+  }
+
+{
+    "id": "1"
+}
