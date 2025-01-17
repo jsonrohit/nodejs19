@@ -1,6 +1,6 @@
 @URL = http://localhost:4000
-#### get api ####
 
+#### Post List ####
 POST {{URL}}
 Content-Type: application/json
 Authorization: Bearer xxx
@@ -36,7 +36,6 @@ query Post($postId: Int!) {
 }
 
 #### Create ####
-
 POST {{URL}}
 Content-Type: application/json
 Authorization: Bearer xxx
@@ -48,7 +47,6 @@ mutation createPost($userId: Int!, $title: String!, $body: String!) {
     id
     title
     body
-    lastName
   }
 }
 
@@ -58,8 +56,30 @@ mutation createPost($userId: Int!, $title: String!, $body: String!) {
   "body": "body"
 }
 
-#### Delete ####
+#### Update ####
+POST {{URL}}
+Content-Type: application/json
+Authorization: Bearer xxx
+X-REQUEST-TYPE: GraphQL
 
+mutation UpdatePost($updatePostId: Int!, $userId: Int!, $title: String!, $body: String!) {
+  updatePost(id: $updatePostId, userId: $userId, title: $title, body: $body) {
+    userId
+    id
+    title
+    body
+    lastName
+  }
+}
+
+{
+  "updatePostId": 1,
+  "userId": 1,
+  "title": "Title 1",
+  "body": "Body 1"
+}
+
+#### Delete ####
 POST {{URL}}
 Content-Type: application/json
 Authorization: Bearer xxx

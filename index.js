@@ -33,6 +33,7 @@ const typeDefs = gql`
 
   type Mutation {
     createPost(userId: Int!, title: String!, body: String!): Post
+    updatePost(id: Int!, userId: Int!, title: String!, body: String!): Post
     deletePost(id: Int!): String
   }
 `;
@@ -53,6 +54,14 @@ const resolvers = {
     Mutation: {
         createPost: async (_, { userId, title, body }) => {
             const response = await axios.post('https://jsonplaceholder.typicode.com/posts', {
+                userId,
+                title,
+                body,
+            });
+            return response.data;
+        },
+        updatePost: async (_, { id, userId, title, body }) => {
+            const response = await axios.put(`https://jsonplaceholder.typicode.com/posts/${id}`,{
                 userId,
                 title,
                 body,
