@@ -4,6 +4,7 @@ const route = express.Router()
 const app = express();
 const { ApolloServer, gql } = require('apollo-server');
 const axios = require('axios');
+const db = require('./src/database/connection');
 
 // Middleware to parse JSON requests
 app.use(express.json());
@@ -13,7 +14,17 @@ app.get('/', (req, res) => {
 })
 
 app.get('/user', (req, res) => {
-    res.send('Hellso Worlds user!')
+    const query = 'SELECT * FROM users'; // Replace with your table name
+
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error('Error executing query:', err);
+            res.status(500).send('Database error');
+            return;
+        }
+        res.json(results);
+    });
+    // res.send('Hellso Worlds user!')
 })
 
 // Define GraphQL schema
@@ -61,7 +72,7 @@ const resolvers = {
             return response.data;
         },
         updatePost: async (_, { id, userId, title, body }) => {
-            const response = await axios.put(`https://jsonplaceholder.typicode.com/posts/${id}`,{
+            const response = await axios.put(`https://jsonplaceholder.typicode.com/posts/${id}`, {
                 userId,
                 title,
                 body,
@@ -80,6 +91,7 @@ const server = new ApolloServer({
     typeDefs,
     resolvers,
 });
+
 
 // Start the server
 server.listen().then(({ url }) => {
